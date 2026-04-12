@@ -1,45 +1,46 @@
+-- Bước 1: Chờ game load
 if not game:IsLoaded() then game.Loaded:Wait() end
+print("Step 1: Game loaded")
 
 local p = game.Players.LocalPlayer
-local vu = game:GetService("VirtualUser")
 local vim = game:GetService("VirtualInputManager")
 
-p.Idled:Connect(function()
-    vu:CaptureController()
-    vu:ClickButton2(Vector2.new())
-end)
-
-local function togglePlay()
-    local success, result = pcall(function()
-        local playerGui = p:WaitForChild("PlayerGui", 5)
-        if not playerGui then return false end
-        
-        local loadingGUI = playerGui:FindFirstChild("LoadingGUI")
-        if not loadingGUI then return false end
-        
-        local playBtn = loadingGUI:FindFirstChild("Play")
-        if not playBtn or not playBtn.Parent then return false end
-        
-        if playBtn.Visible == false then return false end
-        
-        playBtn:Toggle()
-        
-        return true
-    end)
-    return success and result
+-- Bước 2: Nhấn nút Play
+local function clickPlay()
+    local playerGui = p:WaitForChild("PlayerGui", 10)
+    if not playerGui then return false end
+    
+    local loadingGUI = playerGui:FindFirstChild("LoadingGUI")
+    if not loadingGUI then return false end
+    
+    local playBtn = loadingGUI:FindFirstChild("Play")
+    if not playBtn or not playBtn.Parent then return false end
+    
+    local x = playBtn.AbsolutePosition.X + playBtn.AbsoluteSize.X / 2
+    local y = playBtn.AbsolutePosition.Y + playBtn.AbsoluteSize.Y / 2
+    
+    vim:SendMouseButtonEvent(x, y, 0, true, game, 0)
+    task.wait(0.05)
+    vim:SendMouseButtonEvent(x, y, 0, false, game, 0)
+    
+    return true
 end
 
 repeat
     task.wait(0.5)
-    local toggled = togglePlay()
-    if toggled then
-        print("Toggled PLAY button")
-        break
-    end
-until false
+until clickPlay()
 
-task.wait(2)
+print("Step 2: Play button clicked")
 
+-- Bước 3: Bật anti-idle
+local vu = game:GetService("VirtualUser")
+p.Idled:Connect(function()
+    vu:CaptureController()
+    vu:ClickButton2(Vector2.new())
+end)
+print("Step 3: Anti-idle enabled")
+
+-- Bước 4: Giả mạo thông tin player
 local n, d, id = "iking120a", "iking120a", 10711078428
 
 pcall(function()
@@ -86,9 +87,11 @@ if hookmetamethod and getnamecallmethod and newcclosure then
         end))
     end)
 end
+print("Step 4: Player info spoofed - Name: " .. n .. ", ID: " .. id)
 
+-- Bước 5: Load script HUB
 task.wait(2)
-
 pcall(function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/NTT-HUB/Script/refs/heads/main/hft'))()
 end)
+print("Step 5: HUB script loaded")
