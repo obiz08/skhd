@@ -65,4 +65,71 @@ repeat task.wait() until confirmed
 
 pcall(function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/NTT-HUB/Script/refs/heads/main/hft'))()
+end)if not game:IsLoaded() then game.Loaded:Wait() end
+
+local p = game.Players.LocalPlayer
+local vim = game:GetService("VirtualInputManager")
+
+local function clickPlay()
+    local playBtn = p:WaitForChild("PlayerGui", 10):FindFirstChild("LoadingGUI"):FindFirstChild("Play")
+    if not playBtn then return false end
+    local x = playBtn.AbsolutePosition.X + playBtn.AbsoluteSize.X / 2
+    local y = playBtn.AbsolutePosition.Y + playBtn.AbsoluteSize.Y / 2
+    vim:SendMouseButtonEvent(x, y, 0, true, game, 0)
+    task.wait(0.05)
+    vim:SendMouseButtonEvent(x, y, 0, false, game, 0)
+    return true
+end
+
+repeat task.wait(0.5) until clickPlay()
+
+local vu = game:GetService("VirtualUser")
+p.Idled:Connect(function()
+    vu:CaptureController()
+    vu:ClickButton2(Vector2.new())
+end)
+
+local n, d = "iking120a", "iking120a"
+local confirmed = false
+
+pcall(function()
+    local c = p.Character
+    if c then c.Name = n end
+    
+    p.CharacterAdded:Connect(function(char)
+        task.wait()
+        pcall(function() if char then char.Name = n end end)
+    end)
+end)
+
+if hookmetamethod and getnamecallmethod and newcclosure then
+    pcall(function()
+        local hm, nc = hookmetamethod, getnamecallmethod
+        local oi, on, ot, oni
+        oi = hm(game, "__index", newcclosure(function(t, k)
+            if t == p then
+                if k == "Name" then return n elseif k == "DisplayName" then return d end
+            end
+            return oi(t, k)
+        end))
+        on = hm(game, "__namecall", newcclosure(function(t, ...)
+            if t == p and nc() == "GetFullName" then return "Players."..n end
+            return on(t, ...)
+        end))
+        ot = hm(game, "__tostring", newcclosure(function(t)
+            if t == p then return n end
+            return ot(t)
+        end))
+        oni = hm(game, "__newindex", newcclosure(function(t, k, v)
+            if t == p and (k == "Name" or k == "DisplayName") then return end
+            return oni(t, k, v)
+        end))
+        confirmed = true
+    end)
+end
+
+repeat task.wait() until confirmed
+
+pcall(function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/NTT-HUB/Script/refs/heads/main/hft'))()
 end)
