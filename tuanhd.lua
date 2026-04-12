@@ -4,14 +4,12 @@ local p = game.Players.LocalPlayer
 local vu = game:GetService("VirtualUser")
 local vim = game:GetService("VirtualInputManager")
 
-pcall(function()
-    p.Idled:Connect(function()
-        vu:CaptureController()
-        vu:ClickButton2(Vector2.new())
-    end)
+p.Idled:Connect(function()
+    vu:CaptureController()
+    vu:ClickButton2(Vector2.new())
 end)
 
-local function clickPlay()
+local function togglePlay()
     local success, result = pcall(function()
         local playerGui = p:WaitForChild("PlayerGui", 5)
         if not playerGui then return false end
@@ -24,14 +22,7 @@ local function clickPlay()
         
         if playBtn.Visible == false then return false end
         
-        if not playBtn.AbsolutePosition or not playBtn.AbsoluteSize then return false end
-        
-        local x = playBtn.AbsolutePosition.X + playBtn.AbsoluteSize.X / 2
-        local y = playBtn.AbsolutePosition.Y + playBtn.AbsoluteSize.Y / 2
-        
-        vim:SendMouseButtonEvent(x, y, 0, true, game, 0)
-        task.wait(0.05)
-        vim:SendMouseButtonEvent(x, y, 0, false, game, 0)
+        playBtn:Toggle()
         
         return true
     end)
@@ -40,9 +31,9 @@ end
 
 repeat
     task.wait(0.5)
-    local clicked = clickPlay()
-    if clicked then
-        print("Clicked PLAY")
+    local toggled = togglePlay()
+    if toggled then
+        print("Toggled PLAY button")
         break
     end
 until false
