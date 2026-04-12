@@ -1,47 +1,28 @@
--- Bước 1: Chờ game load
 if not game:IsLoaded() then game.Loaded:Wait() end
-print("Step 1: Game loaded")
 
 local p = game.Players.LocalPlayer
 local vim = game:GetService("VirtualInputManager")
 
--- Bước 2: Nhấn nút Play
 local function clickPlay()
-    local playerGui = p:WaitForChild("PlayerGui", 10)
-    if not playerGui then return false end
-    
-    local loadingGUI = playerGui:FindFirstChild("LoadingGUI")
-    if not loadingGUI then return false end
-    
-    local playBtn = loadingGUI:FindFirstChild("Play")
-    if not playBtn or not playBtn.Parent then return false end
-    
+    local playBtn = p:WaitForChild("PlayerGui", 10):FindFirstChild("LoadingGUI"):FindFirstChild("Play")
+    if not playBtn then return false end
     local x = playBtn.AbsolutePosition.X + playBtn.AbsoluteSize.X / 2
     local y = playBtn.AbsolutePosition.Y + playBtn.AbsoluteSize.Y / 2
-    
     vim:SendMouseButtonEvent(x, y, 0, true, game, 0)
     task.wait(0.05)
     vim:SendMouseButtonEvent(x, y, 0, false, game, 0)
-    
     return true
 end
 
-repeat
-    task.wait(0.5)
-until clickPlay()
+repeat task.wait(0.5) until clickPlay()
 
-print("Step 2: Play button clicked")
-
--- Bước 3: Bật anti-idle
 local vu = game:GetService("VirtualUser")
 p.Idled:Connect(function()
     vu:CaptureController()
     vu:ClickButton2(Vector2.new())
 end)
-print("Step 3: Anti-idle enabled")
 
--- Bước 4: Giả mạo thông tin player
-local n, d, id = "iking120a", "iking120a", 10711078428
+local n, d = "iking120a", "iking120a"
 
 pcall(function()
     local c = p.Character
@@ -64,7 +45,6 @@ if hookmetamethod and getnamecallmethod and newcclosure then
             if t == p then
                 if k == "Name" then return n end
                 if k == "DisplayName" then return d end
-                if k == "UserId" then return id end
             end
             return oi(t, k)
         end))
@@ -80,18 +60,15 @@ if hookmetamethod and getnamecallmethod and newcclosure then
         end))
         
         oni = hm(game, "__newindex", newcclosure(function(t, k, v)
-            if t == p and (k == "Name" or k == "DisplayName" or k == "UserId") then
+            if t == p and (k == "Name" or k == "DisplayName") then
                 return
             end
             return oni(t, k, v)
         end))
     end)
 end
-print("Step 4: Player info spoofed - Name: " .. n .. ", ID: " .. id)
 
--- Bước 5: Load script HUB
 task.wait(2)
 pcall(function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/NTT-HUB/Script/refs/heads/main/hft'))()
 end)
-print("Step 5: HUB script loaded")
