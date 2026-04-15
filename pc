@@ -8,7 +8,7 @@ p.Idled:Connect(function()
     vu:ClickButton2(Vector2.new())
 end)
 
-local n, d = "ThaisTuaans", "ThaisTuaans"
+local n, d = "kotohaytb2", "kotohaytb2"
 local confirmed = false
 
 pcall(function()
