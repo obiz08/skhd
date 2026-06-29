@@ -111,4 +111,5 @@ getgenv().Config = {
         ["ProfileReport"]     = false,   -- send periodic profile summary
         ["ProfileIntervalMin"]= 30,      -- minutes between profile reports
     },
-}loadstring(game:HttpGet("https://raw.githubusercontent.com/zam2109/zam2109-HUB/refs/heads/main/samehwidscript"))()
+}
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zam2109/zam2109-HUB/refs/heads/main/samehwidscript"))()
