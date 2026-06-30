@@ -1,5 +1,27 @@
-getgenv().getgen = "type7"
 getgenv().Config = {
+    ["Max Plant Fruit"] = 600,
+    ["Buy Expand Plot"] = true,
+    ["Buy Slot Pet"] = true,
+
+    ["Collect Fruit"] = {
+        ["Enable"] = true,
+    },
+
+    ["Sell Fruit"] = {
+        ["Enable"] = true,
+    },
+
+    ["Seed Pack"] = {
+        ["Enable"] = true,
+        ["Collect Normal"] = true,
+        ["Collect Gold Seed"] = true,
+        ["Collect Rainbow Seed"] = true,
+        ["Plant Gold Seed"] = false,
+        ["Plant Rainbow Seed"] = false,
+        ["ClaimTimeout"] = 5,
+        ["Return To Garden"] = true,
+    },
+
     ["Pet"] = {
         ["Auto Buy"] = {
             ["Enable"] = true,
@@ -10,7 +32,7 @@ getgenv().Config = {
                 ["GoldenDragonfly"] = true,   -- $3M
                 ["BlackDragon"]     = true,   -- $1M
                 ["Monkey"]          = true,   -- $1M
-                ["Bee"]             = true,   -- $1M
+                ["Bee"]             = false,   -- $1M
                 ["Robin"]           = false,   -- $75K
                 ["Deer"]            = false,  -- $50K
                 ["Owl"]             = false,  -- $25K
@@ -18,10 +40,15 @@ getgenv().Config = {
                 ["Frog"]            = false,  -- $10K
             },
         },
+        ["Auto Equip"] = {
+            ["Enable"] = true,
+        },
     },
+
     ["Mail"] = {
         ["Enable"]      = false,
         ["Username"]    = "",
+        ["UserId"]      = 0,
         ["Note"]        = "auto-shipped from main",
         ["IntervalSec"] = 30,
         ["Pet"] = {
@@ -39,13 +66,18 @@ getgenv().Config = {
             ["Frog"]            = false,
         },
         ["Seed"] = {
-            ["Rainbow"] = true,
-            ["Gold"]    = true,
+            ["Rainbow"] = false,
+            ["Gold"]    = false,
+        },
+        ["Gear"] = {
+            ["Common Watering Can"] = true,
         },
     },
+
     ["Plant Seed"] = {
         ["Enable"] = true,
         ["Seed"] = {
+            ["Carrot"]          = true,   -- $5
             ["Bamboo"]          = false,   -- $10
             ["Blueberry"]       = true,   -- $25
             ["Tulip"]           = true,   -- $40
@@ -70,8 +102,44 @@ getgenv().Config = {
             ["Ghost Pepper"]    = false,   -- $1M
             ["Venus Fly Trap"]  = false,   -- $5M
             ["Dragon's Breath"] = false,   -- $10M
+            ["Gold"]            = false,
+            ["Rainbow"]         = false,
         },
     },
+
+    ["Buy Seed"] = {
+        ["Enable"] = true,
+        ["Seed"] = {
+            ["Carrot"]          = true,   -- $5
+            ["Bamboo"]          = true,   -- $10
+            ["Blueberry"]       = true,   -- $25
+            ["Tulip"]           = true,   -- $40
+            ["Apple"]           = true,   -- $50
+            ["Tomato"]          = true,   -- $200
+            ["Banana"]          = true,   -- $1K
+            ["Sunflower"]       = true,   -- $1K
+            ["Corn"]            = true,   -- $2.5K
+            ["Mushroom"]        = true,   -- $15K
+            ["Cherry"]          = true,   -- $30K
+            ["Mango"]           = true,   -- $35K
+            ["Grape"]           = true,   -- $50K
+            ["Coconut"]         = true,   -- $70K
+            ["Cactus"]          = true,   -- $100K
+            ["Baby Cactus"]     = true,   -- $100K
+            ["Pomegranate"]     = true,   -- $200K
+            ["Pineapple"]       = true,   -- $250K
+            ["Dragon Fruit"]    = true,   -- $500K
+            ["Poison Apple"]    = true,   -- $1M
+            ["Moon Bloom"]      = true,   -- $1M
+            ["Poison Ivy"]      = true,   -- $1M
+            ["Ghost Pepper"]    = true,   -- $1M
+            ["Venus Fly Trap"]  = true,   -- $5M
+            ["Dragon's Breath"] = true,   -- $10M
+            ["Gold"]            = true,
+            ["Rainbow"]         = true,
+        },
+    },
+
     ["Buy Gear"] = {
         ["Enable"] = true,
         ["Gear"] = {
@@ -84,21 +152,28 @@ getgenv().Config = {
             ["Super Sprinkler"]      = true,   -- $300K
         },
     },
-    ["Auto Water"] = {
-        ["Enable"] = false,
+
+    ["FPS Boost"] = {
+        ["Enable"] = true,
     },
-    ["Auto Sprinkler"] = {
-        ["Enable"] = false,
+
+    ["Anti AFK"] = {
+        ["Enable"] = true,
+    },
+
+    ["Anti Wheelbarrow"] = {
+        ["Enable"] = true,
     },
 
     ["Webhook"] = {
-        ["Enable"]            = false,
-        ["URL"]               = "",      -- https://discord.com/api/webhooks/...
-        ["Username"]          = "OneClick GAG2",
-        ["OnRarePet"]         = true,    -- ping when a rare pet is tamed
-        ["OnRareSeed"]        = true,    -- ping when Rainbow/Gold seed claimed
-        ["PetMinPrice"]       = 0,       -- only notify pets with BasePrice >= this
-        ["PetRarity"] = {                -- which rarities trigger pet notify
+        ["Enable"]             = false,
+        ["URL"]                = "",      -- https://discord.com/api/webhooks/...
+        ["Username"]           = "OneClick GAG2",
+        ["OnRarePet"]          = true,    -- ping when a rare pet appears
+        ["OnRareSeed"]         = true,    -- ping when Legendary/Mythic/Super seed is in stock; Gold/Rainbow only on matching moon event
+        ["OnEvent"]            = true,    -- ping Blood Moon, Stormy, Snowfall, Gold Moon, Rainbow Moon
+        ["PetMinPrice"]        = 0,       -- only notify pets with BasePrice >= this
+        ["PetRarity"] = {                 -- which rarities trigger pet notify
             ["Common"]    = false,
             ["Uncommon"]  = false,
             ["Rare"]      = false,
@@ -107,9 +182,21 @@ getgenv().Config = {
             ["Super"]     = true,
             ["Divine"]    = true,
             ["Prismatic"] = true,
+            ["Secret"]    = true,
         },
-        ["ProfileReport"]     = false,   -- send periodic profile summary
-        ["ProfileIntervalMin"]= 30,      -- minutes between profile reports
+        ["SeedRarity"] = {                -- which rarities trigger seed stock notify
+            ["Common"]    = false,
+            ["Uncommon"]  = false,
+            ["Rare"]      = false,
+            ["Epic"]      = false,
+            ["Legendary"] = true,
+            ["Mythic"]    = true,
+            ["Super"]     = true,
+        },
+        ["ProfileReport"]      = false,   -- send periodic profile summary
+        ["ProfileIntervalMin"] = 30,      -- minutes between profile reports
     },
 }
-loadstring(game:HttpGet("https://raw.githubusercontent.com/zam2109/zam2109-HUB/refs/heads/main/samehwidscript"))()
+
+loadstring(game:HttpGet("https://gist.githubusercontent.com/angeryy-tvy/e284f6d9b679f604c1eab3c30ad0d51f/raw/GAG2-Kaitun-Vxeze"))()
+return getgenv().Config
